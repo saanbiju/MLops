@@ -5,11 +5,11 @@ import numpy as np
 app = Flask(__name__)
 
 # Load model
-# try:
-#     model = joblib.load("model.pkl")
-# except Exception as e:
-#     model = None
-#     print(f"❌ Failed to load model: {e}")
+try:
+    model = joblib.load("model.pkl")
+except Exception as e:
+    model = None
+    print(f"❌ Failed to load model: {e}")
 
 @app.route("/")
 def index():
