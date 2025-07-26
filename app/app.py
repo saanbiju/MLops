@@ -33,7 +33,7 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-@app.route("/healthhh")
+@app.route("/health")
 def health():
     if model:
         return "OK", 200
