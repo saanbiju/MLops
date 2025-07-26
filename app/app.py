@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return "Welcome to the Flask ML App  narewshIT-7🎉"
+    return "Welcome to the Flask ML App  narewshIT-8🎉"
 
 @app.route("/predict", methods=["GET"])
 def predict():
