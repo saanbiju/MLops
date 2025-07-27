@@ -13,7 +13,7 @@ except Exception as e:
 
 @app.route("/")
 def index():
-    return "Welcome to the Flask ML App  narewshIT-2🎉"
+    return "Welcome to the Flask ML App  narewshIT-3🎉"
 
 @app.route("/predict", methods=["GET"])
 def predict():
@@ -33,7 +33,7 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-@app.route("/health")
+@app.route("/healthhh")
 def health():
     if model:
         return "OK", 200
