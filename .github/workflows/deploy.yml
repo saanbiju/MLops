@@ -1,4 +1,4 @@
-name: Deploy Flask ML App with Health Check (Train model on EC2)
+name: Deploy Flask ML App with Health Check (Train model on Azure VM)
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to EC2, Train Model, Health Check, and Rollback
+    name: Deploy to Azure VM, Train Model, Health Check, and Rollback
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: 🧰 Backup Existing App on EC2 (overwrite always)
+      - name: 🧰 Backup Existing App on Azure VM
         run: |
           ssh -o StrictHostKeyChecking=no azureuser@${{ secrets.EC2_HOST }} '
             if [ -d ~/mlapp ]; then
@@ -31,16 +31,16 @@ jobs:
             fi
           '
 
-      - name: 🚚 Upload New App Code to EC2
+      - name: 🚚 Upload New App Code to Azure VM
         run: |
           ssh -o StrictHostKeyChecking=no azureuser@${{ secrets.EC2_HOST }} 'mkdir -p ~/mlapp'
           scp -o StrictHostKeyChecking=no -r app/* azureuser@${{ secrets.EC2_HOST }}:~/mlapp/
 
-      - name: 🐍 Install Python & pip on EC2
+      - name: 🐍 Install Python & pip on Azure VM
         run: |
           ssh -tt azureuser@${{ secrets.EC2_HOST }} '
-            sudo apt install -y python3 &&
-            python3 -m ensurepip --upgrade &&
+            sudo apt-get update -y &&
+            sudo apt-get install -y python3 python3-pip python3-venv python3-setuptools &&
             pip3 install --upgrade pip setuptools
           '
 
@@ -51,7 +51,7 @@ jobs:
             pip3 install -r requirements.txt
           '
 
-      - name: 🧠 Train ML Model on EC2
+      - name: 🧠 Train ML Model on Azure VM
         run: |
           ssh -tt azureuser@${{ secrets.EC2_HOST }} '
             cd ~/mlapp &&
